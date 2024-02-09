@@ -1,4 +1,4 @@
-# Sorting Algorithm Visualizer
+# Sorting Algorithm Visualizer (WIP)
 
 CLI app that displays the entire sorting process step by step given an array or using a randomized array otherwise.
 

@@ -24,7 +24,6 @@ def sort() -> None:
     for index, option in enumerate(options, start=1):
         print(f"{index}: {option}")
     choice = IntPrompt.ask("Sorting type: ", choices=[str(index) for index, _ in enumerate(options, start=1)])
-    print(f"Sorting using: {options[choice-1]}")
     plot(choice)
 
 @app.callback()

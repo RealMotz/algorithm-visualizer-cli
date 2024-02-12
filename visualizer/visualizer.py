@@ -113,3 +113,15 @@ class MergeSort(SortingStrategy):
 class InsertionSort(SortingStrategy):
     def sort(self, numbers):
         print("Sorting using: Insertion Sort")
+        for index in range(0, len(numbers)-1):
+            next = numbers[index+1]
+            if(next >= numbers[index]):
+                continue
+
+            i = index
+            while(i >= 0 and numbers[i] > numbers[i+1]):
+                temp = numbers[i]
+                numbers[i] = next
+                numbers[i+1] = temp
+                i-=1
+                self.print_stars(numbers, [i, i+1])

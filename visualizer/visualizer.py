@@ -33,9 +33,9 @@ class SortingStrategy(ABC):
     def __init__(self, window) -> None:
         self.window = window
 
-    def print_stars(self, numbers, index=-2):
+    def print_stars(self, numbers, index=None):
         for i, number in enumerate(self.normalize_stars(numbers)):
-            if i == index or i == index+1:
+            if (index is not None) and (i in index):
                 self.window.addstr(i, 0, '*'*number + '\n', curses.color_pair(1))
             else:
                 self.window.addstr(i, 0, '*'*number + '\n')
@@ -65,22 +65,23 @@ class BubbleSort(SortingStrategy):
                     temp = numbers[index]
                     numbers[index] = numbers[index+1]
                     numbers[index+1] = temp
-                    self.print_stars(numbers, index)
+                    self.print_stars(numbers, [index, index+1])
 
 class MergeSort(SortingStrategy):
     def sort(self, numbers):
         print("Sorting using: Merge Sort")
         self.original = numbers
-        res = self.aux(numbers)
+        self.print_stars(numbers)
+        res = self.aux(numbers, 0, len(numbers))
         print(res)
 
-    def aux(self, numbers):
+    def aux(self, numbers, start, end):
         n = len(numbers)
         if(n == 1):
             return numbers
         half = math.ceil(n/2)
-        h1 = self.aux(numbers[0:half])
-        h2 = self.aux(numbers[half:n])
+        h1 = self.aux(numbers[0:half], 0, half)
+        h2 = self.aux(numbers[half:n], half, n)
 
         i = 0
         j = 0
@@ -101,6 +102,11 @@ class MergeSort(SortingStrategy):
             merge.append(h2[j])
             j+=1
 
+        index = 0
+        for i in range(start, end):
+            self.original[i] = merge[index]
+            index+=1
+        self.print_stars(self.original, [x for x in range(start, end)])
         return merge
 
 

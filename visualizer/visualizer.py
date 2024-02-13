@@ -1,6 +1,7 @@
 import curses
 import math
 import time
+import random
 from rich import print
 from abc import ABC, abstractmethod
 
@@ -12,9 +13,14 @@ def plot(choice):
         curses.use_default_colors()
         curses.init_pair(1, curses.COLOR_GREEN, -1)
         strategy = get_sorting_strategy(choice, mywindow)
-        strategy.sort([5,4,3,2,1])
-    except Exception:
-        print("Error occurred when plotting...")
+        strategy.sort([random.randint(1,100) for _ in range(1, min(curses.LINES, 20))])
+        time.sleep(1)
+    except Exception as err:
+        mywindow.clear()
+        mywindow.addstr(0, 0, "Error occurred when plotting...")
+        mywindow.addstr(1, 0, f"Unexpected {err=}, {type(err)=}")
+        mywindow.refresh()
+        time.sleep(2)
     finally:
         curses.endwin()
 
@@ -71,25 +77,26 @@ class MergeSort(SortingStrategy):
     def sort(self, numbers):
         print("Sorting using: Merge Sort")
         self.original = numbers
+        # print(numbers)
         self.print_stars(numbers)
-        res = self.aux(numbers, 0, len(numbers))
-        print(res)
+        self.aux(numbers, 0, len(numbers))
 
     def aux(self, numbers, start, end):
         n = len(numbers)
         if(n == 1):
             return numbers
         half = math.ceil(n/2)
-        h1 = self.aux(numbers[0:half], 0, half)
-        h2 = self.aux(numbers[half:n], half, n)
+        h1 = self.aux(numbers[:half], start, start+half)
+        h2 = self.aux(numbers[half:], start+half, end)
 
         i = 0
         j = 0
         merge = []
         while(i < len(h1) and j < len(h2)):
-            if(h1[i] < h2[j]):
+            if(h1[i] <= h2[j]):
                 merge.append(h1[i])
                 i+=1
+                continue
             if(h2[j] < h1[i]):
                 merge.append(h2[j])
                 j+=1

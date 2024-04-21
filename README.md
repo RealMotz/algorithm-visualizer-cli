@@ -4,7 +4,8 @@ CLI app that displays the entire sorting process step by step given an array or 
 
 ## Requirements
 
-Python 3.6+
++ Python 3.6+
++ Activating the virtual environment by executing `source venv/bin/activate`
 
 ## Installation
 
@@ -15,7 +16,7 @@ python -m pip install -r requirements.txt
 ## Usage
 
 ```bash
-python -m main.py visualizer sort
+python -m visualizer sort
 ```
 
 Select the algorithm to visualize and select the array to sort.
